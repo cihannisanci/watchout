@@ -10,16 +10,29 @@ var update = function() {
 
   var dataArray = randomArray;
 
-  svg.selectAll('circle').data(dataArray).enter().append('circle');
-  d3.selectAll('circle').transition().attr('cx', function(d) { return d[0]; }).attr('cy', function(d) { return d[1]; }).attr('r', '10');
+  svg.selectAll('circle').data(dataArray).enter().append('circle').classed('enemy', true);
+  d3.selectAll('.enemy').transition().duration(1200).attr('cx', function(d) { return d[0]; }).attr('cy', function(d) { return d[1]; }).attr('r', '10');
 
   console.log('running');
 
 };
 
-var svg = d3.select('body').append('svg').attr('height', '450').attr('width', '700'); 
+var svg = d3.select('body').append('svg').attr('height', '450').attr('width', '700');
 
-setInterval(update, 1000);
+var player = svg.append('circle').classed('player', true).attr('cx', '350').attr('cy', '225').attr('r', '10');
+
+var drag = d3.drag().on('drag', function() { 
+  player.attr('cx', d3.event.x).attr('cy', d3.event.y); 
+});
+
+player.call(drag);
+
+
+update();
+
+
+
+setInterval(update, 1300);
 
 // update();
 
