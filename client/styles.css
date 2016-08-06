@@ -10,4 +10,18 @@ Feel free to use it if you like. */
 
 .enemy {
   r: 10;
+  animation: whirl 500ms linear infinite;
+  transform-origin: 50% 50%;
+}
+
+@keyframes whirl {
+  100% {transform: rotate(360deg);}
+}
+
+/*
+@keyframes identifier {
+  0% { top: 0; left: 0; }
+  30% { top: 50px; }
+  68%, 72% { left: 50px; }
+  100% { top: 100px; left: 100%; }
 }

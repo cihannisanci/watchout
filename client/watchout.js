@@ -8,27 +8,40 @@ var updatePosition = function() {
     randomArray.push([cx, cy]);
   }
 
-  var dataArray = randomArray;
+  var dataArray = randomArray; //xlink:href="/files/2917/fxlogo.png" x="0" y="0" height="100" width="100" 
 
-  svg.selectAll('circle').data(dataArray).enter().append('circle').classed('enemy', true);
+  svg.selectAll('image').data(dataArray).enter().append('image').attr('xlink:href', 'shuriken.svg').attr('width', '20px').attr('height', '20px').classed('enemy', true);
 
   var enemies = d3.selectAll('.enemy');
   
-  enemies.transition().duration(1800).attr('cx', function(d) { return d[0]; }).attr('cy', function(d) { return d[1]; });
+  enemies.transition().duration(1800).attr('x', function(d) { return d[0]; }).attr('y', function(d) { return d[1]; });
 
 };
 
-var updateCollisions = function() {
+var updateScore = function() {
+
+  score++;
+
+  if (score > highScore) {
+    highScore = score;
+  }
 
   enemies.each(function() {
     var enemy = d3.select(this);
-    var distance = Math.sqrt(Math.pow((enemy.attr('cx') - player.attr('cx')), 2) + Math.pow((enemy.attr('cy') - player.attr('cy')), 2));
+    var distance = Math.sqrt(Math.pow((enemy.attr('x') - player.attr('cx')), 2) + Math.pow((enemy.attr('y') - player.attr('cy')), 2));
     if (distance < 20) {
-      collisionCount++;
+      score = 0;
+      collisions++;
     }
   });
 
-  console.log(collisionCount);
+  d3.select('.current').text('Score: ' + score);
+  d3.select('.highscore').text('High Score: ' + highScore);
+  d3.select('.collisions').text('Collisions: ' + collisions);
+  
+  console.log(score);
+
+
 };
 
 
@@ -42,7 +55,13 @@ var drag = d3.drag().on('drag', function() {
 
 player.call(drag);
 
-var collisionCount = 0;
+var score = 0;
+
+
+
+var collisions = 0;
+
+var highScore = 0;
 
 updatePosition();
 
@@ -50,7 +69,7 @@ var enemies = d3.selectAll('.enemy');
 
 setInterval(updatePosition, 2000);
 
-setInterval(updateCollisions, 50);
+setInterval(updateScore, 50);
 
 // update();
 
